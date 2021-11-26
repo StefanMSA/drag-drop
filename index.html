@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and drop</title>
+	
+	<style>
+		#red_rectangle {
+		width:150px;
+		height:150px;
+		background-color:red;
+		}
+		#blue_rectangle {
+		width:150px;
+		height:150px;
+		background-color:blue;
+		}
+		#red_circle {
+		width:100px;
+		height:100px;
+		background-color:red;
+		border-radius:100%;
+		}
+		#blue_circle {
+		width:100px;
+		height:100px;
+		background-color:blue;
+		border-radius:100%;
+		}
+		.vertical-center {
+		display: flex;
+		align-items: center;
+		}
+		.circle-center {
+		margin: 0 auto;
+		border: 2px solid black;
+		}
+	</style>
+
+</head>
+<body>
+
+  <div id="red_rectangle" class="vertical-center" ondrop="drop(event)" ondragover="allowDrop(event)" data-boxtype="red"></div>
+  <br>
+  <div id="blue_rectangle" class="vertical-center" ondrop="drop(event)" ondragover="allowDrop(event)" data-boxtype="blue"></div>
+  <br>
+  <div id="red_circle" draggable="true" ondragstart="drag(event)" data-appendto="red"></div>
+  <br>
+  <div id="blue_circle" draggable="true" ondragstart="drag(event)" data-appendto="blue"></div>
+  <br>
+
+  <script>
+    // allows other elements to be dropped in this element
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    // drags the element and stores its data for the drop event
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    //drops the element
+    function drop(ev) {
+      ev.preventDefault();
+      //gets the dragged element's data
+      var data = ev.dataTransfer.getData("text");
+      //drops the element if the conditions are met
+      if(ev.target.getAttribute('data-boxtype') == document.getElementById(data).getAttribute('data-appendto')) {
+        ev.target.appendChild(document.getElementById(data));
+        document.getElementById(data).classList.add("circle-center");
+        document.getElementById(data).setAttribute("draggable", "false");
+      }
+    }
+  </script>
+</body>
+</html>
